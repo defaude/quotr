@@ -1,0 +1,9 @@
+## Interface: 80000
+## Title: [|cffff8000quotr|r]
+## DefaultState: enabled
+## Author: defaude
+## Version: 0.0.1
+## Notes: A new take on the somewhat outdated WowQuote add-on.
+
+code/config.lua
+code/bootstrap.lua
