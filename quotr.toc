@@ -6,4 +6,6 @@
 ## Notes: A new take on the somewhat outdated WowQuote add-on.
 
 code/config.lua
+code/slashCommands.lua
+
 code/bootstrap.lua
