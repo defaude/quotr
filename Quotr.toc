@@ -1,11 +1,9 @@
 ## Interface: 80000
-## Title: [|cffff8000quotr|r]
+## Title: |cffffc700[|cffff8000Quotr|cffffc700]|r
 ## DefaultState: enabled
 ## Author: defaude
-## Version: 0.0.1
+## Version: 0.0.2
 ## Notes: A new take on the somewhat outdated WowQuote add-on.
+## SavedVariables: QuotrDB
 
-code/config.lua
-code/slashCommands.lua
-
-code/bootstrap.lua
+Quotr.xml
