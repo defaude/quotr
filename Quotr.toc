@@ -1,4 +1,4 @@
-## Interface: 80000
+## Interface: 80300
 ## Title: |cffffc700[|cffff8000Quotr|cffffc700]|r
 ## DefaultState: enabled
 ## Author: defaude
