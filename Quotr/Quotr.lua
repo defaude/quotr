@@ -7,6 +7,7 @@ function Quotr:Print(...)
 end
 
 local channels = {
+    self = 'self',
     guild = 'guild',
     raid = 'raid',
     party = 'party'
@@ -14,7 +15,7 @@ local channels = {
 
 local defaults = {
     global = {
-        channel = channels.guild
+        channel = channels.self
     }
 }
 
