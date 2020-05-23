@@ -50,7 +50,17 @@ function Quotr:OnInitialize()
         elseif (input == 'reset') then
             self:ResetConfig()
 
-        -- todo: add 'help' section
+        elseif (input == 'help') then
+            local function line(command, description)
+                return format('|cffffffff/quotr %-8s |cffffc700%s\n', command, description)
+            end
+
+            local message = 'You can use these commands:\n\n'
+            message = message .. line('', 'Shows the Quotr UI')
+            message = message .. line('help', 'Shows this help message')
+            message = message .. line('reset', 'Resets the configuration to the defaults')
+
+            self:Print(message)
         end
     end)
 end
