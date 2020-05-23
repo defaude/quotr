@@ -6,4 +6,18 @@
 ## Notes: A new take on the somewhat outdated WowQuote add-on.
 ## SavedVariables: QuotrDB
 
-Quotr.xml
+# dependencies
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\AceAddon-3.0\AceAddon-3.0.lua
+Libs\AceDB-3.0\AceDB-3.0.lua
+Libs\AceConsole-3.0\AceConsole-3.0.lua
+# todo: only load the files that we're ACTUALLY using
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+
+
+
+# addon code
+
+Quotr.lua
