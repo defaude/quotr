@@ -29,7 +29,7 @@ local channels = { self = 'Self', party = 'Party', raid = 'Raid', guild = 'Guild
 local defaults = {
     global = {
         channel = 'self',
-        position = { top = 700, left = 200, width = 240, height = 500 }
+        position = { top = 1000, left = 60, width = 240, height = 500 }
     }
 }
 
@@ -42,43 +42,54 @@ function Quotr:OnInitialize()
 
     -- set up /quotr chat command
     LibStub('AceConsole-3.0'):RegisterChatCommand('quotr', function(input)
-        Quotr:Debug('SlashCommand', input)
+        self:Debug('SlashCommand', input)
 
         if (input == nil or input == '') then
-            Quotr:ShowWindow()
+            self:ShowWindow()
 
         elseif (input == 'reset') then
-            Quotr:Error('reset not yet implemented')
+            self:ResetConfig()
+
+        -- todo: add 'help' section
         end
     end)
 end
 
 function Quotr:OnDisable()
     self:Debug('OnDisable')
-    if (self.scroll) then
-        AceGUI:Release(self.scroll)
-        self.scroll = nil
-    end
+    self:ReleaseUI()
+end
+--endregion
 
-    if (self.scrollGroup) then
-        AceGUI:Release(self.scrollGroup)
-        self.scrollGroup = nil
-    end
+function Quotr:ReleaseUI()
+    self:Debug('ReleaseUI')
 
     if (self.window) then
         AceGUI:Release(self.window)
         self.window = nil
     end
 end
---endregion
 
 function Quotr:ShowWindow()
+    self:Debug('ShowWindow')
+
     if (self.window) then
         self.window:Show()
 
     else
         self:InitWindow()
     end
+end
+
+function Quotr:ResetConfig()
+    self:Debug('ResetConfig')
+    self:ReleaseUI()
+
+    self:Debug('Resetting database')
+    self.db:ResetDB()
+    self.config = self.db.global
+
+    self:ShowWindow()
 end
 
 --region GUI Init
@@ -91,15 +102,8 @@ function Quotr:InitWindow()
         w:SetTitle('[Quotr]')
         w:SetLayout('List')
 
-        -- This saves the position somehow
+        -- This saves the width/height and the position somehow
         w:SetStatusTable(self.config.position)
-
-        -- But the width and the height must be explicitly polled for whatever reason
-        w.frame:SetScript('OnSizeChanged', function(_, width, height)
-            self.config.position.width = width
-            self.config.position.height = height
-            self:HeightUpdated()
-        end)
         --endregion
 
         --region channel select
@@ -128,15 +132,22 @@ function Quotr:InitWindow()
 
         -- Store some references in the addon object
         self.scroll = scroll
-        self.scrollGroup = scrollGroup
         self.window = w
-        self:HeightUpdated()
-    end
-end
 
-function Quotr:HeightUpdated()
-    if (self.scrollGroup) then
-        self.scrollGroup:SetHeight(self.config.position.height - 70)
+        --region scroll group auto-height
+        local function UpdateHeight(height)
+            -- make some space for the dropdown above as well some padding below
+            scrollGroup:SetHeight(height - 70)
+        end
+
+        -- run it once
+        UpdateHeight(w.frame:GetHeight())
+
+        -- and on every resize
+        w.frame:SetScript('OnSizeChanged', function(_, _, height)
+            UpdateHeight(height)
+        end)
+        --endregion
     end
 end
 --endregion
