@@ -69,7 +69,6 @@ function Quotr:OnDisable()
     self:Debug('OnDisable')
     self:ReleaseUI()
 end
---endregion
 
 function Quotr:ReleaseUI()
     self:Debug('ReleaseUI')
@@ -79,6 +78,7 @@ function Quotr:ReleaseUI()
         self.window = nil
     end
 end
+--endregion
 
 function Quotr:ShowWindow()
     self:Debug('ShowWindow')
@@ -95,10 +95,11 @@ function Quotr:ResetConfig()
     self:Debug('ResetConfig')
     self:ReleaseUI()
 
-    self:Debug('Resetting database')
+    self:Debug('Resetting config...')
     self.db:ResetDB()
     self.config = self.db.global
 
+    self:Print('Configuration reset to defaults.')
     self:ShowWindow()
 end
 
@@ -109,7 +110,7 @@ function Quotr:InitWindow()
         self:Debug('Creating window...')
         --region window
         local w = AceGUI:Create('Window')
-        w:SetTitle('[Quotr]')
+        w:SetTitle('Quotr')
         w:SetLayout('List')
 
         -- This saves the width/height and the position somehow
@@ -144,6 +145,9 @@ function Quotr:InitWindow()
         self.scroll = scroll
         self.window = w
 
+        -- render the packs
+        self:UpdatePacksUI()
+
         --region scroll group auto-height
         local function UpdateHeight(height)
             -- make some space for the dropdown above as well some padding below
@@ -161,3 +165,65 @@ function Quotr:InitWindow()
     end
 end
 --endregion
+
+function Quotr:UpdatePacksUI()
+    self:Debug('updatePacks')
+
+    if (self.scroll == nil) then
+        return
+    end
+
+    -- clear previous UI elements
+    self.scroll:ReleaseChildren()
+
+    for pack, _, index in spairs(self.packs) do
+        local even = index % 2 == 0
+        self:AddPackUI(pack, even)
+    end
+end
+
+function Quotr:AddPackUI(pack, even)
+    local heading = AceGUI:Create('Heading')
+    heading:SetText(pack.name)
+    heading:SetFullWidth(true)
+    self.scroll:AddChild(heading)
+end
+
+function Quotr:AddMediaUI(packId, media)
+
+end
+
+Quotr.packs = {
+    barlow = {
+        id = 'barlow',
+        name = 'Barlow',
+        path = 'Interface\\AddOns\\' .. 'QuoteMediaBarlow' .. '\\media\\',
+        media = {
+            {
+                id = '01',
+                name = 'Aushilfspausenclown',
+                file = 'aushilfspausenclown.mp3',
+                length = 4
+            },
+            {
+                id = '02',
+                name = 'Damagedealer',
+                file = 'damagedealer.mp3',
+                length = 1
+            }
+        }
+    },
+    wq2sound = {
+        id = 'wq2sounds',
+        name = 'WQ2 Sounds',
+        path = 'Interface\\AddOns\\' .. 'QuoteMediaWQ2Sounds' .. '\\media\\',
+        media = {
+            {
+                id = '003',
+                name = 'Welcome',
+                file = '003.mp3',
+                length = 2
+            }
+        }
+    }
+}
